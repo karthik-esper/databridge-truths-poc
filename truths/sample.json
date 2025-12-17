@@ -1,6 +1,6 @@
 {
-  "version": "0.0.1-poc",
-  "tarball_url": "https://github.com/karthik-esper/databridge-truths-poc/releases/download/v0.0.1-poc/databridge-0.0.1-poc.tar.gz",
+  "version": "0.1.3-poc",
+  "tarball_url": "https://github.com/karthik-esper/databridge-releases-poc/releases/download/v0.1.3-poc/databridge-0.1.3.tar.gz",
   "created_utc": "2025-12-16T00:00:00Z",
   "notes": "POC release. Tarball will contain a basic print at the moment"
 }
