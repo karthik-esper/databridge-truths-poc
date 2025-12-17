@@ -1,0 +1,146 @@
+{
+  "schema_id": "databridge-telemetry-schema-poc",
+  "schema_format": "pgn_envelope_v1",
+  "description": "Shape-only schema for databridge_ble_poc.py simulated NMEA2000-like telemetry. No behavior/quirks; just structure and types.",
+  "telemetry_envelope": {
+    "type_field": "type",
+    "type_value": "DEVICE_TELEMETRY",
+    "required_fields": [
+      "type",
+      "ts_utc",
+      "pgns"
+    ],
+    "fields": [
+      {
+        "key": "type",
+        "type": "string",
+        "nullable": false,
+        "example": "DEVICE_TELEMETRY"
+      },
+      {
+        "key": "ts_utc",
+        "type": "string",
+        "format": "date-time",
+        "nullable": false,
+        "example": "2025-12-16T00:00:00Z"
+      },
+      {
+        "key": "pgns",
+        "type": "array",
+        "items": { "type": "object" },
+        "nullable": false
+      }
+    ]
+  },
+  "pgn_object": {
+    "required_fields": [
+      "pgn",
+      "name",
+      "src",
+      "priority",
+      "ts_utc",
+      "fields"
+    ],
+    "fields": [
+      { "key": "pgn", "type": "integer", "nullable": false },
+      { "key": "name", "type": "string", "nullable": false },
+      { "key": "src", "type": "integer", "nullable": false },
+      { "key": "priority", "type": "integer", "nullable": false },
+      { "key": "ts_utc", "type": "string", "format": "date-time", "nullable": false },
+      { "key": "fields", "type": "object", "nullable": false }
+    ]
+  },
+  "messages": [
+    {
+      "pgn": 129025,
+      "name": "PositionRapidUpdate",
+      "fields": [
+        { "key": "latitude_deg", "type": "number", "unit": "deg", "nullable": false },
+        { "key": "longitude_deg", "type": "number", "unit": "deg", "nullable": false }
+      ]
+    },
+    {
+      "pgn": 129026,
+      "name": "COGSOGRapidUpdate",
+      "fields": [
+        {
+          "key": "cog_reference",
+          "type": "string",
+          "nullable": false,
+          "example": "True",
+          "notes": "databridge_ble_poc.py currently emits a constant string 'True'."
+        },
+        { "key": "cog_deg", "type": "number", "unit": "deg", "nullable": false },
+        { "key": "sog_knots", "type": "number", "unit": "kn", "nullable": false }
+      ]
+    },
+    {
+      "pgn": 128267,
+      "name": "WaterDepth",
+      "fields": [
+        { "key": "depth_m", "type": "number", "unit": "m", "nullable": false },
+        { "key": "offset_m", "type": "number", "unit": "m", "nullable": false },
+        { "key": "max_range_m", "type": "number", "unit": "m", "nullable": false }
+      ]
+    },
+    {
+      "pgn": 130310,
+      "name": "EnvironmentalParameters",
+      "fields": [
+        {
+          "key": "temperature_source",
+          "type": "string",
+          "nullable": false,
+          "example": "SeaTemperature",
+          "notes": "databridge_ble_poc.py currently emits a constant string 'SeaTemperature'."
+        },
+        { "key": "temperature_c", "type": "number", "unit": "C", "nullable": false },
+        { "key": "humidity_percent", "type": "number", "unit": "%", "nullable": true },
+        { "key": "atmospheric_pressure_hpa", "type": "number", "unit": "hPa", "nullable": true }
+      ]
+    },
+    {
+      "pgn": 127508,
+      "name": "BatteryStatus",
+      "fields": [
+        { "key": "instance", "type": "integer", "nullable": false },
+        { "key": "voltage_v", "type": "number", "unit": "V", "nullable": false },
+        { "key": "current_a", "type": "number", "unit": "A", "nullable": false },
+        { "key": "temperature_c", "type": "number", "unit": "C", "nullable": false },
+        { "key": "state_of_charge_percent", "type": "number", "unit": "%", "nullable": false }
+      ]
+    },
+    {
+      "pgn": 127257,
+      "name": "Attitude",
+      "fields": [
+        { "key": "sid", "type": "integer", "nullable": false },
+        { "key": "roll_deg", "type": "number", "unit": "deg", "nullable": false },
+        { "key": "pitch_deg", "type": "number", "unit": "deg", "nullable": false },
+        { "key": "yaw_deg", "type": "number", "unit": "deg", "nullable": true }
+      ]
+    },
+    {
+      "pgn": 129284,
+      "name": "NavigationData",
+      "fields": [
+        { "key": "sid", "type": "integer", "nullable": false },
+        {
+          "key": "destination",
+          "type": "object",
+          "nullable": false,
+          "properties": [
+            { "key": "waypoint_name", "type": "string", "nullable": false },
+            { "key": "latitude_deg", "type": "number", "unit": "deg", "nullable": false },
+            { "key": "longitude_deg", "type": "number", "unit": "deg", "nullable": false }
+          ]
+        },
+        { "key": "bearing_true_deg", "type": "number", "unit": "deg", "nullable": true },
+        { "key": "distance_to_destination_nm", "type": "number", "unit": "nm", "nullable": true },
+        { "key": "xte_nm", "type": "number", "unit": "nm", "nullable": false },
+        { "key": "eta_utc", "type": "string", "format": "date-time", "nullable": true },
+        { "key": "arrival_alarm", "type": "boolean", "nullable": false }
+      ]
+    }
+  ]
+}
