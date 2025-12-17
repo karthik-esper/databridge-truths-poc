@@ -7,8 +7,10 @@
     "type_value": "DEVICE_TELEMETRY",
     "required_fields": [
       "type",
+      "device_id",
+      "trip_id",
       "ts_utc",
-      "pgns"
+      "nmea2000"
     ],
     "fields": [
       {
@@ -18,6 +20,18 @@
         "example": "DEVICE_TELEMETRY"
       },
       {
+        "key": "device_id",
+        "type": "string",
+        "nullable": false,
+        "example": "databridge3"
+      },
+      {
+        "key": "trip_id",
+        "type": "string",
+        "nullable": false,
+        "example": "poc-trip"
+      },
+      {
         "key": "ts_utc",
         "type": "string",
         "format": "date-time",
@@ -25,12 +39,25 @@
         "example": "2025-12-16T00:00:00Z"
       },
       {
-        "key": "pgns",
-        "type": "array",
-        "items": { "type": "object" },
-        "nullable": false
+        "key": "nmea2000",
+        "type": "object",
+        "nullable": false,
+        "notes": "NMEA2000-like envelope containing decoded/simulated PGN blocks.",
+        "properties": [
+          { "key": "bus", "type": "string", "nullable": true, "example": "can0" },
+          { "key": "dst", "type": "integer", "nullable": true, "example": 255 },
+          { "key": "notes", "type": "string", "nullable": true },
+          {
+            "key": "pgns",
+            "type": "array",
+            "nullable": false,
+            "items": { "type": "object" },
+            "notes": "Array of PGN objects. This is the primary schema-controlled surface."
+          }
+        ]
       }
-    ]
+    ],
+    "pgn_list_path": "nmea2000.pgns"
   },
   "pgn_object": {
     "required_fields": [
@@ -47,7 +74,10 @@
       { "key": "src", "type": "integer", "nullable": false },
       { "key": "priority", "type": "integer", "nullable": false },
       { "key": "ts_utc", "type": "string", "format": "date-time", "nullable": false },
-      { "key": "fields", "type": "object", "nullable": false }
+      { "key": "fields", "type": "object", "nullable": false },
+
+      { "key": "sim_generated", "type": "boolean", "nullable": true, "notes": "Present when a PGN is generated from schema (no native generator)." },
+      { "key": "sim_notes", "type": "string", "nullable": true }
     ]
   },
   "messages": [
